@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 public class QueryServletTest extends BaseServerTestCase<QueryServlet> {
     @Override
     protected QueryServlet create() {
-        return new QueryServlet();
+        return new QueryServlet(databaseService);
     }
 
 
@@ -22,15 +22,11 @@ public class QueryServletTest extends BaseServerTestCase<QueryServlet> {
     public void testNoElements() throws IOException {
         when(mockRequest.getParameter("command")).thenReturn("max");
         servlet.doGet(mockRequest, mockResponse);
-        assertEquals("<html><body>\n" +
-                "<h1>Product with max price: </h1>\n" +
-                "</body></html>\n", writer.toString());
+        assertEquals("<html><body><h1>Product with max price: </h1></body></html>" + System.lineSeparator(), writer.toString());
         refreshWriter();
         when(mockRequest.getParameter("command")).thenReturn("min");
         servlet.doGet(mockRequest, mockResponse);
-        assertEquals("<html><body>\n" +
-                "<h1>Product with min price: </h1>\n" +
-                "</body></html>\n", writer.toString());
+        assertEquals("<html><body><h1>Product with min price: </h1></body></html>" + System.lineSeparator(), writer.toString());
     }
 
     @Test
@@ -46,31 +42,19 @@ public class QueryServletTest extends BaseServerTestCase<QueryServlet> {
                 "(\"a\", 15), (\"b\", 5), (\"c\", 10)");
         when(mockRequest.getParameter("command")).thenReturn("max");
         servlet.doGet(mockRequest, mockResponse);
-        assertEquals("<html><body>\n" +
-                "<h1>Product with max price: </h1>\n" +
-                "a\t15</br>\n" +
-                "</body></html>\n", writer.toString());
+        assertEquals("<html><body><h1>Product with max price: </h1>a\t15</br></body></html>" + System.lineSeparator(), writer.toString());
         refreshWriter();
         when(mockRequest.getParameter("command")).thenReturn("min");
         servlet.doGet(mockRequest, mockResponse);
-        assertEquals("<html><body>\n" +
-                "<h1>Product with min price: </h1>\n" +
-                "b\t5</br>\n" +
-                "</body></html>\n", writer.toString());
+        assertEquals("<html><body><h1>Product with min price: </h1>b\t5</br></body></html>" + System.lineSeparator(), writer.toString());
         refreshWriter();
         when(mockRequest.getParameter("command")).thenReturn("sum");
         servlet.doGet(mockRequest, mockResponse);
-        assertEquals("<html><body>\n" +
-                "Summary price: \n" +
-                "30\n" +
-                "</body></html>\n", writer.toString());
+        assertEquals("<html><body>Summary price: 30</body></html>" + System.lineSeparator(), writer.toString());
         refreshWriter();
         when(mockRequest.getParameter("command")).thenReturn("count");
         servlet.doGet(mockRequest, mockResponse);
-        assertEquals("<html><body>\n" +
-                "Number of products: \n" +
-                "3\n" +
-                "</body></html>\n", writer.toString());
+        assertEquals("<html><body>Number of products: 3</body></html>" + System.lineSeparator(), writer.toString());
     }
 
     private void refreshWriter() throws IOException {

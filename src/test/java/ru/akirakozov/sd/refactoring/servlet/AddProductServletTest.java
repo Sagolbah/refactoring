@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 public class AddProductServletTest extends BaseServerTestCase<AddProductServlet> {
     @Override
     protected AddProductServlet create() {
-        return new AddProductServlet();
+        return new AddProductServlet(databaseService);
     }
 
     @Test

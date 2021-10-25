@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring;
 
 import org.junit.Before;
+import ru.akirakozov.sd.refactoring.service.ProductDatabaseService;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +21,14 @@ public abstract class BaseServerTestCase<T extends HttpServlet> {
     protected HttpServletResponse mockResponse;
     protected MockWriter writer;
     protected T servlet;
+    protected ProductDatabaseService databaseService;
 
     @Before
     public void init() {
         this.mockRequest = mock(HttpServletRequest.class);
         this.mockResponse = mock(HttpServletResponse.class);
         this.writer = new MockWriter();
+        databaseService = new ProductDatabaseService();
         doUpdate("CREATE TABLE IF NOT EXISTS PRODUCT" +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 " NAME           TEXT    NOT NULL, " +
